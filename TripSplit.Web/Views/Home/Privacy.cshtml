@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Polityka prywatności";
+    Layout = "_Layout";
+}
+<section class="ts-card">
+    <header class="list-head" style="margin-bottom:12px">
+        <h2 class="list-title">@ViewData["Title"]</h2>
+        <p class="text-muted" style="max-width:64ch;margin-top:.25rem">
+            Szanujemy Twoją prywatność. Przechowujemy wyłącznie dane niezbędne do działania aplikacji
+            i nigdy nie sprzedajemy ich stronom trzecim.
+        </p>
+    </header>
+
+    <!-- Kafelki z najważniejszymi informacjami -->
+    <div class="cards" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">
+        <article class="card lift" style="padding:16px">
+            <div style="font-size:22px;margin-bottom:8px">🔐</div>
+            <h3 style="margin:0 0 6px">Jakie dane gromadzimy?</h3>
+            <ul style="margin:0;padding-left:18px;line-height:1.6">
+                <li>Dane konta (adres e-mail do logowania).</li>
+                <li>Dane przejazdów (lokalizacje, koszty, uczestnicy).</li>
+                <li>Dane aut (nazwa, paliwo, spalanie, pojemność baku).</li>
+            </ul>
+        </article>
+
+        <article class="card lift" style="padding:16px">
+            <div style="font-size:22px;margin-bottom:8px">🔗</div>
+            <h3 style="margin:0 0 6px">Udostępnianie przejazdu</h3>
+            <p style="margin:0">
+                „Link do podglądu” umożliwia wyświetlenie szczegółów po podaniu imienia i nazwiska uczestnika.
+                Link możesz w każdej chwili <strong>unieważnić</strong>.
+            </p>
+        </article>
+
+        <article class="card lift" style="padding:16px">
+            <div style="font-size:22px;margin-bottom:8px">🧰</div>
+            <h3 style="margin:0 0 6px">Twoja kontrola</h3>
+            <ul style="margin:0;padding-left:18px;line-height:1.6">
+                <li>Możesz edytować i usuwać swoje dane.</li>
+                <li>Masz prawo do usunięcia konta (Dane osobowe → Usuń konto).</li>
+                <li>W każdej chwili możesz zmienić hasło/metody logowania.</li>
+            </ul>
+        </article>
+    </div>
+
+    <hr style="border:none;height:1px;background:var(--line);margin:16px 0" />
+
+    <div class="cards" style="grid-template-columns:1fr;gap:10px">
+        <article class="card" style="padding:14px">
+            <h3 style="margin-top:0">Kontakt</h3>
+            <p style="margin:.25rem 0 10px">
+                Masz pytania dotyczące prywatności lub chcesz złożyć wniosek o usunięcie danych?
+                Skontaktuj się z nami.
+            </p>
+
+            <div class="actions" style="gap:.6rem;flex-wrap:wrap">
+                <a class="btn btn--soft" asp-controller="Home" asp-action="Index">← Powrót</a>
+
+                <a class="btn btn--accent" href="msternol@outlook.com">Napisz do nas</a>
+            </div>
+        </article>
+    </div>
+</section>

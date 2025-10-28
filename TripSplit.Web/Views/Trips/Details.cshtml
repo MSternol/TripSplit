@@ -1,0 +1,108 @@
+﻿@model TripSplit.Web.Models.Trips.TripDetailsVm
+@{
+    ViewData["Title"] = "Szczegóły przejazdu";
+    Layout = "_Layout";
+}
+
+<section class="ts-card">
+    <header class="list-head">
+        <div>
+            <h2 class="list-title">@Model.StartName <span class="arrow" aria-hidden="true">→</span> @Model.EndName</h2>
+            <p class="list-sub">
+                Start: @Model.StartedAt.ToLocalTime():yyyy-MM-dd HH\\:mm
+                @if (Model.EndedAt.HasValue)
+                {
+                    <span> • Koniec: @Model.EndedAt.Value.ToLocalTime():yyyy-MM-dd HH\\:mm</span>
+                }
+            </p>
+        </div>
+        <div class="list-actions">
+            <a class="btn btn--soft" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+        </div>
+    </header>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="ts-card">
+                <h3>Parametry przejazdu</h3>
+                <dl class="stats stats--two mt-3">
+                    <div class="stat">
+                        <dt class="stat__label">Cena paliwa</dt>
+                        <dd class="stat__value"><span class="metric__num">@Model.FuelPricePerL:0.00</span><span class="metric__unit">zł/l</span></dd>
+                    </div>
+                    <div class="stat">
+                        <dt class="stat__label">Śr. spalanie</dt>
+                        <dd class="stat__value"><span class="metric__num">@Model.AverageConsumptionLper100:0.##</span><span class="metric__unit">l/100 km</span></dd>
+                    </div>
+                    <div class="stat">
+                        <dt class="stat__label">Zużycie</dt>
+                        <dd class="stat__value"><span class="metric__num">@Model.LitersUsed:0.##</span><span class="metric__unit">l</span></dd>
+                    </div>
+                    <div class="stat">
+                        <dt class="stat__label">Parking</dt>
+                        <dd class="stat__value"><span class="metric__num">@Model.ParkingCost:0.00</span><span class="metric__unit">zł</span></dd>
+                    </div>
+                    <div class="stat">
+                        <dt class="stat__label">Dodatkowe</dt>
+                        <dd class="stat__value"><span class="metric__num">@Model.ExtraCosts:0.00</span><span class="metric__unit">zł</span></dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <aside class="col-md-6">
+            <div class="ts-card">
+                <h3>Podsumowanie</h3>
+
+                <div class="stats stats--two mt-3">
+                    <div class="stat">
+                        <div class="stat__label">Paliwo (łącznie)</div>
+                        <div class="stat__value"><span class="metric__num">@Model.FuelCostTotal:0.00</span><span class="metric__unit">zł</span></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__label">RAZEM</div>
+                        <div class="stat__value" style="font-size:1.35rem"><span class="metric__num">@Model.TripCostTotal:0.00</span><span class="metric__unit">zł</span></div>
+                        <small class="text-muted">na osobę: @Model.CostPerPerson:0.00 zł</small>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__label">Dystans</div>
+                        <div class="stat__value"><span class="metric__num">@Model.DistanceKm:0.##</span><span class="metric__unit">km</span></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat__label">Uczestnicy</div>
+                        <div class="stat__value"><span class="metric__num">@Model.PeopleCount</span></div>
+                    </div>
+                </div>
+
+                <div class="list-actions mt-3">
+                    <a class="btn btn--ghost" asp-action="SetParticipants" asp-route-id="@Model.Id">Uczestnicy</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    @if (TempData["ShareUrl"] != null)
+    {
+        <div class="alert alert-info mt-3">
+            Link do podglądu: <a href="@TempData["ShareUrl"]">@TempData["ShareUrl"]</a>
+        </div>
+    }
+
+    <div class="ts-card mt-3">
+        <header class="list-head" style="margin-bottom:10px">
+            <h3 class="list-title">Udostępnij (tylko podgląd)</h3>
+        </header>
+
+        <form asp-action="GenerateShareLink" method="post" class="row g-3" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="col-md-6">
+                <label class="form-label">Ważny do (UTC, opcjonalnie)</label>
+                <input type="datetime-local" name="expiresAtUtc" class="form-control" />
+            </div>
+            <div class="col-md-6" style="display:flex;align-items:end">
+                <button class="btn btn--accent" type="submit">Generuj link</button>
+            </div>
+        </form>
+    </div>
+</section>

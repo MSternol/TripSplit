@@ -1,0 +1,66 @@
+﻿@page
+@model TripSplit.Web.Areas.Identity.Pages.Account.LoginModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Zaloguj się";
+}
+
+<section class="auth-hero">
+    <div class="auth-card">
+        <div class="auth-visual">
+            <div class="pitch">
+                <h3>Witaj w TripSplit</h3>
+                <p>Liczenie kosztów przejazdu — przejrzyście i bez stresu.</p>
+                <div class="points">
+                    <span>Podział kosztów</span>
+                    <span>Kalkulator spalania</span>
+                    <span>Udostępnienia podglądu</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-form">
+            <h2 class="mb-0">Zaloguj się</h2>
+            <p class="subtitle">E-mail/login lub konto zewnętrzne.</p>
+
+            <form method="post" asp-route-returnUrl="@Model.ReturnUrl" novalidate>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.EmailOrUserName"></label>
+                    <input asp-for="Input.EmailOrUserName" class="form-control" autocomplete="username" />
+                    <span asp-validation-for="Input.EmailOrUserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3" style="display:flex;align-items:center;gap:.6rem;">
+                    <input asp-for="Input.RememberMe" class="form-check-input" />
+                    <label asp-for="Input.RememberMe" class="form-check-label"></label>
+                </div>
+
+                <div class="actions" style="gap:.5rem;flex-wrap:wrap;">
+                    <button type="submit" class="btn btn--accent">Zaloguj</button>
+                    <a class="btn btn--soft" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Rejestracja</a>
+                </div>
+
+                <div class="mt-3">
+                    <a asp-page="./ForgotPassword">Nie pamiętasz hasła?</a>
+                </div>
+            </form>
+
+            <div style="border-top:1px solid var(--line); margin:14px 0; padding-top:10px;">
+                <partial name="_ExternalProviders" model="(Model.ExternalLogins, Model.ReturnUrl)" />
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

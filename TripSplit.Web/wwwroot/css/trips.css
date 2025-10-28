@@ -1,0 +1,208 @@
+﻿/* ===== PRZEJAZDY ===== */
+.list-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.list-title {
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: .2px;
+}
+
+.list-sub {
+    margin: .25rem 0 0;
+    opacity: .75;
+}
+
+.list-actions {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.trips-grid {
+    --gap: var(--gap);
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: var(--gap);
+}
+
+@media (max-width:760px) {
+    .trips-grid {
+        grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+    }
+}
+
+.trip-card {
+    background: var(--surface);
+    outline: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    border-radius: 16px;
+    padding: 14px;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    transition: transform .18s ease, box-shadow .18s ease;
+    container-type: inline-size;
+    container-name: tripcard;
+}
+
+    .trip-card.lift:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+
+    .trip-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: 16px;
+        background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 35%, transparent), color-mix(in srgb, var(--border) 45%, transparent));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: .22;
+        pointer-events: none;
+    }
+
+.trip-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .5rem;
+    min-width: 0;
+}
+
+.trip-head__left {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    min-width: 0;
+}
+
+.trip-title {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.2;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+    .trip-title .arrow {
+        opacity: .65;
+    }
+
+    .trip-title .route {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+.trip-date {
+    align-self: flex-start;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .325rem .55rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .8rem;
+    line-height: 1;
+    border: 1px solid transparent;
+}
+
+.chip--muted {
+    color: var(--muted-fg,#64748b);
+    background: var(--muted-bg,rgba(100,116,139,.12));
+    border-color: var(--muted-br,rgba(100,116,139,.25));
+}
+
+.trip-card__stats {
+    margin-top: .25rem;
+}
+
+.stats {
+    margin: 0;
+}
+
+.stats--three {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: .6rem .9rem;
+}
+
+.stat {
+    background: var(--surface-2);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: .7rem .8rem;
+    min-height: 68px;
+    display: grid;
+    align-content: center;
+    transition: border-color .2s, background-color .2s;
+}
+
+    .stat:hover {
+        border-color: var(--surface-4);
+        background: var(--surface-2h);
+    }
+
+.stat__label {
+    font-size: .8rem;
+    color: var(--muted);
+    letter-spacing: .02em;
+    margin: 0 0 .2rem;
+    white-space: nowrap;
+}
+
+.stat__value {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .4rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "tnum" 1,"lnum" 1;
+}
+
+.metric__num {
+    font-size: 1.15rem;
+}
+
+.metric__unit {
+    font-size: .82rem;
+    font-weight: 600;
+    opacity: .7;
+    letter-spacing: .01em;
+}
+
+.trip-card__foot {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-top: .85rem;
+}
+
+@container tripcard (max-width:520px) {
+    .stats--three {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+@container tripcard (max-width:360px) {
+    .stats--three {
+        grid-template-columns: 1fr;
+    }
+}

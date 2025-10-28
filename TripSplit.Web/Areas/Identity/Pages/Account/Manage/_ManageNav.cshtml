@@ -1,0 +1,18 @@
+﻿@inject SignInManager<TripSplit.Infrastructure.Identity.AppUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<nav class="manage-nav" aria-label="Zarządzaj kontem">
+    <a class="pill-link @ManageNavPages.IndexNavClass(ViewContext)" asp-page="./Index">Profil</a>
+    <a class="pill-link @ManageNavPages.EmailNavClass(ViewContext)" asp-page="./Email">E-mail</a>
+    <a class="pill-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-page="./ChangePassword">Hasło</a>
+    @if (hasExternalLogins)
+    {
+        <a class="pill-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">
+            Logowania zewnętrzne
+        </a>
+    }
+    <a class="pill-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" asp-page="./TwoFactorAuthentication">
+        Uwierzytelnianie 2FA
+    </a>
+</nav>

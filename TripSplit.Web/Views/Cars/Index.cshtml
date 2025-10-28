@@ -1,0 +1,136 @@
+﻿@model IReadOnlyList<TripSplit.Web.Models.Cars.CarListItemVm>
+@using TripSplit.Web.Models.Shared
+@using TripSplit.Web.UI
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Auta";
+    Layout = "_Layout";
+    var hasCars = Model is { Count: > 0 };
+    var pl = CultureInfo.CurrentCulture;
+}
+
+@functions {
+    string StatusBadge(int? daysLeft)
+        => !daysLeft.HasValue ? "badge--muted"
+         : daysLeft.Value < 0 ? "badge--danger"
+         : daysLeft.Value <= 7 ? "badge--warn"
+         : "badge--ok";
+
+    string StatusText(int? daysLeft)
+        => !daysLeft.HasValue ? "brak danych"
+         : daysLeft.Value < 0 ? "po terminie"
+         : daysLeft.Value == 0 ? "dzisiaj"
+         : $"za {daysLeft.Value} dni";
+}
+
+<section class="section">
+    <header class="list-head">
+        <div>
+            <h2 class="list-title">Auta</h2>
+            <p class="list-sub">Twoja garażowa lista — szybki podgląd spalania i pojemności baku.</p>
+        </div>
+        @if (hasCars)
+        {
+            <div class="list-actions">
+                <a class="btn btn--accent" asp-action="Create" aria-label="Dodaj auto">➕ Dodaj auto</a>
+            </div>
+        }
+    </header>
+
+    @if (!hasCars)
+    {
+        @await Html.PartialAsync("_EmptyState", new EmptyStateVm {
+        Title = "Nie dodałeś jeszcze żadnego auta",
+        Subtitle = "Dodaj samochód, by mieć pod ręką średnie spalanie i pojemność baku.",
+        PrimaryText = "➕ Dodaj auto",
+        PrimaryUrl = Url.Action("Create", "Cars")!,
+        SecondaryText = "Wróć do przejazdów",
+        SecondaryUrl = Url.Action("Index", "Trips")!
+        })
+        }
+        else
+    {
+        <div class="cars-grid">
+            @foreach (var c in Model)
+            {
+                <article class="car-card lift">
+                    <header class="car-card__head">
+                        <div class="car-card__title">
+                            <div class="car-card__avatar" aria-hidden="true">🚗</div>
+                            <h3 class="card__title" title="@c.Name">@c.Name</h3>
+                        </div>
+                        <span class="chip fuel-badge" title="Rodzaj paliwa">
+                            @FuelTypeItems.Label(c.FuelType)
+                        </span>
+                    </header>
+
+                    <section class="car-card__stats card--soft" aria-label="Parametry pojazdu">
+                        <dl class="stats--two">
+                            <div class="stat">
+                                <dt class="stat__label">Śr. spalanie</dt>
+                                <dd class="stat__value">
+                                    <span class="metric__num">@c.AverageConsumptionLper100.ToString("0.##", pl)</span>
+                                    <span class="metric__unit">l/100 km</span>
+                                </dd>
+                            </div>
+                            <div class="stat">
+                                <dt class="stat__label">Pojemność baku</dt>
+                                <dd class="stat__value">
+                                    <span class="metric__num">@c.TankCapacityL.ToString("0.##", pl)</span>
+                                    <span class="metric__unit">l</span>
+                                </dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <section class="car-card__status" aria-label="Ważność OC i badań">
+                        <div class="status-col">
+                            <div class="stat__label">OC</div>
+                            @if (c.InsuranceValidTo.HasValue)
+                            {
+                                <div class="status-line">
+                                    <span class="chip @StatusBadge(c.InsuranceDaysLeft)">@StatusText(c.InsuranceDaysLeft)</span>
+                                    <small class="stat__hint">do @(c.InsuranceValidTo?.ToLocalTime().ToString("dd.MM.yyyy") ?? "—")</small>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="chip badge--muted">brak danych</span>
+                            }
+                        </div>
+
+                        <div class="status-col">
+                            <div class="stat__label">Badanie techniczne</div>
+                            @if (c.InspectionValidTo.HasValue)
+                            {
+                                <div class="status-line">
+                                    <span class="chip @StatusBadge(c.InspectionDaysLeft)">@StatusText(c.InspectionDaysLeft)</span>
+                                    <small class="stat__hint">do @(c.InspectionValidTo?.ToLocalTime().ToString("dd.MM.yyyy") ?? "—")</small>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="chip badge--muted">brak danych</span>
+                            }
+                        </div>
+                    </section>
+
+                    <footer class="car-card__actions">
+                        <a class="btn btn--ghost btn-sm" asp-action="Details" asp-route-id="@c.Id">Szczegóły</a>
+                        <a class="btn btn--soft btn-sm" asp-action="Edit" asp-route-id="@c.Id">Edytuj</a>
+                        <form asp-action="Delete" method="post" onsubmit="return confirm('Usunąć to auto?');" class="inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@c.Id" />
+                            <button class="btn btn-danger btn-sm" type="submit">Usuń</button>
+                        </form>
+                    </footer>
+                </article>
+            }
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <script src="~/js/cars-index.js" asp-append-version="true"></script>
+}

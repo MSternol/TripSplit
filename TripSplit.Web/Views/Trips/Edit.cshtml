@@ -1,0 +1,76 @@
+﻿@model TripSplit.Web.Models.Trips.TripEditVm
+@{
+    ViewData["Title"] = "Edytuj przejazd";
+    Layout = "_Layout";
+}
+
+<section class="ts-card">
+    <header class="list-head">
+        <div>
+            <h2 class="list-title">Edytuj przejazd</h2>
+            <p class="list-sub">@Model.StartName <span class="arrow">→</span> @Model.EndName</p>
+        </div>
+        <div class="list-actions">
+            <a class="btn btn--soft" asp-action="Details" asp-route-id="@Model.Id">← Szczegóły</a>
+        </div>
+    </header>
+
+    <form asp-action="Edit" method="post" novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="FuelPricePerL" class="form-label"></label>
+                <input asp-for="FuelPricePerL" class="form-control" step="0.01" />
+                <span asp-validation-for="FuelPricePerL" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="AverageConsumptionLper100" class="form-label"></label>
+                <input asp-for="AverageConsumptionLper100" class="form-control" step="0.1" />
+                <span asp-validation-for="AverageConsumptionLper100" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="LitersUsed" class="form-label"></label>
+                <input asp-for="LitersUsed" class="form-control" step="0.001" />
+                <span asp-validation-for="LitersUsed" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="DistanceKm" class="form-label"></label>
+                <input asp-for="DistanceKm" class="form-control" step="0.001" />
+                <span asp-validation-for="DistanceKm" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="ParkingCost" class="form-label"></label>
+                <input asp-for="ParkingCost" class="form-control" step="0.01" />
+                <span asp-validation-for="ParkingCost" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="ExtraCosts" class="form-label"></label>
+                <input asp-for="ExtraCosts" class="form-control" step="0.01" />
+                <span asp-validation-for="ExtraCosts" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="PeopleCount" class="form-label"></label>
+                <input asp-for="PeopleCount" class="form-control" min="1" />
+                <span asp-validation-for="PeopleCount" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="list-actions mt-4">
+            <button class="btn btn--accent" type="submit">Zapisz</button>
+            <a class="btn btn--ghost" asp-action="Details" asp-route-id="@Model.Id">Anuluj</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

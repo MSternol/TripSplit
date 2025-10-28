@@ -1,0 +1,14 @@
+﻿@model TripSplit.Web.Models.Cars.CarInspectionVm
+
+<div class="row js-inspection-fields">
+    <div class="col-md-6 col-12">
+        <label asp-for="InspectionValidFrom" class="form-label"></label>
+        <input asp-for="InspectionValidFrom" class="form-control" type="date" />
+        <span asp-validation-for="InspectionValidFrom" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 col-12">
+        <label asp-for="InspectionValidTo" class="form-label"></label>
+        <input asp-for="InspectionValidTo" class="form-control" type="date" />
+        <span asp-validation-for="InspectionValidTo" class="text-danger"></span>
+    </div>
+</div>

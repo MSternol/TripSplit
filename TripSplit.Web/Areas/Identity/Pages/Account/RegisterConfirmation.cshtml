@@ -1,0 +1,18 @@
+﻿@page
+@model TripSplit.Web.Areas.Identity.Pages.Account.RegisterConfirmationModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Potwierdzenie rejestracji";
+}
+<section class="ts-card">
+    <h2>@ViewData["Title"]</h2>
+    @if (Model.DisplayConfirmAccountLink && !string.IsNullOrWhiteSpace(Model.EmailConfirmationUrl))
+    {
+        <p>Środowisko deweloperskie – potwierdź konto:</p>
+        <p><a class="btn btn--accent" id="confirm-link" href="@Model.EmailConfirmationUrl">Potwierdź konto</a></p>
+    }
+    else
+    {
+        <p>Sprawdź skrzynkę pocztową i kliknij link potwierdzający.</p>
+    }
+</section>

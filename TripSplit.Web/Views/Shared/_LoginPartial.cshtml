@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TripSplit.Infrastructure.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    var displayName = User?.Identity?.Name ?? "Użytkownik";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var u = await UserManager.GetUserAsync(User);
+        if (u is not null && !string.IsNullOrWhiteSpace(u.DisplayName))
+        {
+            displayName = u.DisplayName;
+        }
+    }
+}
+
+<ul class="navbar-nav" style="display:flex;align-items:center;gap:10px;list-style:none;margin:0;padding:0">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="link" asp-area="Identity" asp-page="/Account/Manage/Index">Witaj, @displayName</a>
+        </li>
+        <li class="nav-item">
+            <form method="post"
+                  asp-area="Identity"
+                  asp-page="/Account/Logout"
+                  asp-route-returnUrl='@Url.Action("Index", "Trips", new { area = "" })'
+                  style="margin:0">
+                <button type="submit" class="btn btn--ghost">Wyloguj</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="btn btn--soft" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn--mint" asp-area="Identity" asp-page="/Account/Login">Zaloguj</a>
+        </li>
+    }
+</ul>

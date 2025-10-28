@@ -1,0 +1,37 @@
+﻿@page
+@model TripSplit.Web.Areas.Identity.Pages.Account.Manage.DeletePersonalDataModel
+@{
+    ViewData["Title"] = "Usuń konto";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<section class="ts-card">
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="alert alert-danger" role="alert">
+        <p><strong>Uwaga:</strong> Usunięcie konta jest trwałe i nieodwracalne.</p>
+    </div>
+
+    <form id="delete-user" method="post" novalidate class="form-grid">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        @if (Model.RequirePassword)
+        {
+            <div>
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+        }
+
+        <div class="form-actions">
+            <button class="btn btn-danger" type="submit">Usuń moje konto</button>
+            <a asp-page="PersonalData" class="btn btn--soft">Anuluj</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

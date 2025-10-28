@@ -1,0 +1,82 @@
+﻿@model TripSplit.Web.Models.Cars.CarEditVm
+@using TripSplit.Web.UI
+@{
+    ViewData["Title"] = "Edytuj auto";
+    Layout = "_Layout";
+}
+
+<section class="ts-card">
+    <header class="list-head">
+        <div>
+            <h2 class="list-title">Edytuj auto</h2>
+            <p class="list-sub">Zaktualizuj podstawowe dane pojazdu.</p>
+        </div>
+        <div class="list-actions">
+            <a class="btn btn--soft" asp-action="Details" asp-route-id="@Model.Id">← Szczegóły</a>
+        </div>
+    </header>
+
+    <form asp-action="Edit" method="post" novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row">
+            <div class="col-12">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="np. Octavia 1.6 TDI" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4 col-12">
+                <label asp-for="FuelType" class="form-label"></label>
+                <select asp-for="FuelType" class="form-select" asp-items="FuelTypeItems.All(Model.FuelType)"></select>
+                <span asp-validation-for="FuelType" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4 col-12">
+                <label asp-for="AverageConsumptionLper100" class="form-label"></label>
+                <input asp-for="AverageConsumptionLper100" class="form-control" type="number" step="0.1" min="0" placeholder="np. 6,2" />
+                <span asp-validation-for="AverageConsumptionLper100" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4 col-12">
+                <label asp-for="TankCapacityL" class="form-label"></label>
+                <input asp-for="TankCapacityL" class="form-control" type="number" step="0.1" min="0" placeholder="np. 55" />
+                <span asp-validation-for="TankCapacityL" class="text-danger"></span>
+            </div>
+        </div>
+
+        <hr />
+
+        <details class="disclosure card" data-accordion="insurance">
+            <summary class="disclosure__summary">
+                <input asp-for="IncludeInsurance" class="form-check-input js-toggle-insurance" type="checkbox" />
+                <label asp-for="IncludeInsurance" class="form-label mb-0"></label>
+            </summary>
+            <div class="disclosure__body">
+                <partial name="Partials/_InsuranceFields" for="Insurance" />
+            </div>
+        </details>
+
+        <details class="disclosure card" data-accordion="inspection">
+            <summary class="disclosure__summary">
+                <input asp-for="IncludeInspection" class="form-check-input js-toggle-inspection" type="checkbox" />
+                <label asp-for="IncludeInspection" class="form-label mb-0"></label>
+            </summary>
+            <div class="disclosure__body">
+                <partial name="Partials/_InspectionFields" for="Inspection" />
+            </div>
+        </details>
+
+        <div class="list-actions mt-3" style="justify-content:flex-end">
+            <a class="btn btn--ghost" asp-action="Details" asp-route-id="@Model.Id">Anuluj</a>
+            <button class="btn btn--accent" type="submit">Zapisz zmiany</button>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/car-maintenance-toggle.js" asp-append-version="true"></script>
+}

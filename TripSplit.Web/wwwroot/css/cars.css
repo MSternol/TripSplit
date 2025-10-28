@@ -1,0 +1,267 @@
+﻿/* ===== AUTA ===== */
+.cars-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.cars-title {
+    margin: 0;
+}
+
+.cars-sub {
+    margin: .25rem 0 0;
+}
+
+.cars-actions {
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+}
+
+.cars-grid {
+    --gap: var(--gap);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+    gap: var(--gap);
+}
+
+@media (max-width:640px) {
+    .cars-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+    }
+}
+
+.cards {
+    --min: 280px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min),1fr));
+    gap: var(--gap);
+}
+
+.car-card {
+    position: relative;
+    border-radius: 16px;
+    padding: 16px;
+    background: var(--surface);
+    outline: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    display: flex;
+    flex-direction: column;
+    min-height: 160px;
+    transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+    container-type: inline-size;
+    container-name: carcard;
+}
+
+    .car-card.lift:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+
+    .car-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        padding: 1px;
+        background: linear-gradient(140deg, color-mix(in srgb, var(--accent) 35%, transparent), color-mix(in srgb, var(--border) 45%, transparent));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        opacity: .28;
+    }
+
+.car-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .5rem;
+    min-width: 0;
+}
+
+.car-card__title {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    min-width: 0;
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: clamp(16px,1.9vw,18px);
+    letter-spacing: .2px;
+}
+
+    .car-card__title > * {
+        min-width: 0;
+    }
+
+    .car-card__title .route {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.car-card__avatar {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+    font-size: 18px;
+}
+
+.card--soft {
+    padding: 14px;
+    border-radius: 14px;
+    display: flex;
+    background: var(--surface-2);
+    outline: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+}
+
+.stats--two {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: .6rem .9rem;
+    margin: 0;
+    align-items: stretch;
+}
+
+.stat {
+    background: var(--surface-2);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: .7rem .8rem;
+    min-height: 68px;
+    display: grid;
+    align-content: center;
+    transition: border-color .2s ease, background-color .2s ease;
+}
+
+    .stat:hover {
+        border-color: var(--surface-4);
+        background: var(--surface-2h);
+    }
+
+.stat__label {
+    font-size: .8rem;
+    letter-spacing: .02em;
+    color: var(--muted);
+    margin: 0 0 .2rem;
+    white-space: nowrap;
+}
+
+.stat__value {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .4rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "tnum" 1,"lnum" 1;
+}
+
+.metric__num {
+    font-size: 1.2rem;
+}
+
+.metric__unit {
+    font-size: .82rem;
+    font-weight: 600;
+    opacity: .7;
+    letter-spacing: .01em;
+}
+
+.car-card__status {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: .75rem 1rem;
+    margin-top: .75rem;
+}
+
+.status-col .stat__label {
+    margin-bottom: .25rem;
+}
+
+.status-line {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.car-card__actions {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-top: .9rem;
+}
+
+    .car-card__actions .btn {
+        flex: 0 1 auto;
+    }
+
+@container carcard (max-width:360px) {
+    .car-card__actions .btn {
+        flex: 1 1 100%;
+    }
+}
+
+.chip, .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .325rem .55rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .8rem;
+    line-height: 1;
+    border: 1px solid transparent;
+}
+
+.fuel-badge {
+    color: var(--fuel-fg);
+    background: var(--fuel-bg);
+    border: 1px solid var(--fuel-br);
+    font-weight: 700;
+}
+
+.badge--ok {
+    color: var(--ok-fg);
+    background: var(--ok-bg);
+    border-color: var(--ok-br);
+}
+
+.badge--warn {
+    color: var(--warn-fg);
+    background: var(--warn-bg);
+    border-color: var(--warn-br);
+}
+
+.badge--danger {
+    color: var(--danger-fg);
+    background: var(--danger-bg);
+    border-color: var(--danger-br);
+}
+
+.badge--muted {
+    color: var(--muted-fg);
+    background: var(--muted-bg);
+    border-color: var(--muted-br);
+}
+
+@container carcard (max-width:420px) {
+    .stats--two {
+        grid-template-columns: 1fr;
+    }
+
+    .car-card__status {
+        grid-template-columns: 1fr;
+    }
+}

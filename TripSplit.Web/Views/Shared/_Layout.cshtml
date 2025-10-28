@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Mvc.Routing
+@{
+    Layout = null;
+    var title = (ViewData["Title"] as string) ?? "TripSplit";
+    string currentCtrl = (ViewContext.RouteData.Values["controller"]?.ToString() ?? "").ToLowerInvariant();
+    Func<string, string> isActive = ctrl => currentCtrl == ctrl.ToLowerInvariant() ? "link link--active" : "link";
+}
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>@title - TripSplit</title>
+
+    <!-- ✅ Główny styl + hotfixy -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fix-pack.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+
+    <noscript>
+        <style>
+            #navLinks {
+                display: flex !important
+            }
+
+            .theme-switch {
+                display: none !important
+            }
+        </style>
+    </noscript>
+</head>
+<body>
+    <!-- NAV -->
+    <nav class="nav" role="navigation" aria-label="Główne menu">
+        <div class="container nav__inner">
+            <a class="brand" asp-controller="Trips" asp-action="Index">
+                <span class="brand__mark" aria-hidden="true">TS</span>
+                <span class="brand__txt">TripSplit</span>
+            </a>
+
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <button class="hamb" id="navToggle"
+                        type="button"
+                        aria-label="Otwórz/zamknij menu"
+                        aria-controls="navLinks"
+                        aria-expanded="false">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <div class="links" id="navLinks">
+                    <a class="@isActive("Trips")"
+                       asp-controller="Trips" asp-action="Index"
+                       aria-current="@(currentCtrl == "trips" ? "page" : null)">
+                        Przejazdy
+                    </a>
+                    <a class="@isActive("Cars")"
+                       asp-controller="Cars" asp-action="Index"
+                       aria-current="@(currentCtrl == "cars" ? "page" : null)">
+                        Auta
+                    </a>
+                </div>
+            }
+
+            <button class="theme-switch theme-switch--compact" id="themeToggle" type="button" title="Przełącz motyw" aria-live="polite">
+                <span class="theme-switch__icon" id="themeIcon" aria-hidden="true">🌙</span>
+                <span class="theme-label">Motyw</span>
+            </button>
+
+            <div class="auth">
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+
+    <main class="container main" id="content" tabindex="-1">
+        @RenderBody()
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container" style="display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap">
+            <span>© @DateTime.Now.Year TripSplit</span>
+            <span style="display:flex;gap:10px;align-items:center">
+                <a class="link" asp-controller="Home" asp-action="Privacy">Prywatność</a>
+                <a class="link" href="msternol@outlook.com">Pomoc</a>
+            </span>
+        </div>
+    </footer>
+
+    <script defer src="~/lib/jquery/dist/jquery.js"></script>
+    <script defer src="~/js/nav.js" asp-append-version="true"></script>
+    <script defer src="~/js/theme.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,83 @@
+﻿.trips-grid,
+.cars-grid,
+.cards {
+    --gap: var(--gap, 14px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--gap);
+    justify-items: stretch;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
+}
+
+.cards {
+    --min: 280px;
+    grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
+}
+
+.trip-card,
+.car-card {
+    margin: 0;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    container-type: inline-size;
+}
+
+.trip-card__stats,
+.car-card__status {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.trip-card__foot,
+.car-card__actions {
+    margin-top: auto;
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+    .trip-card__foot .btn,
+    .car-card__actions .btn {
+        flex: 0 1 auto;
+    }
+
+@container (max-width: 360px) {
+    .trip-card__foot .btn,
+    .car-card__actions .btn {
+        flex: 1 1 100%;
+    }
+}
+
+.trip-title,
+.car-card__title {
+    min-width: 0;
+}
+
+    .trip-title .route,
+    .car-card__title .route {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.trip-card::before,
+.car-card::before {
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+@supports not (grid-template-columns: subgrid) {
+ 
+}
+
+@media (max-width: 640px) {
+    .trips-grid,
+    .cars-grid,
+    .cards {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+}

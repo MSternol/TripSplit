@@ -1,0 +1,191 @@
+﻿@model TripSplit.Web.Models.Cars.CarDetailsVm
+@using TripSplit.Web.UI
+@{
+    ViewData["Title"] = "Szczegóły auta";
+    Layout = "_Layout";
+
+    string fuelLabel = FuelTypeItems.Label(Model.FuelType);
+
+    bool showInsurance = Model.InsuranceValidFrom.HasValue || Model.InsuranceValidTo.HasValue
+                         || !string.IsNullOrWhiteSpace(Model.InsuranceCompany)
+                         || !string.IsNullOrWhiteSpace(Model.InsurancePolicyNumber);
+
+    bool showInspection = Model.InspectionValidFrom.HasValue || Model.InspectionValidTo.HasValue;
+
+    bool anyAlerts = (Model.RemindersEnabled && (Model.InsuranceExpired || Model.InsuranceDueSoon
+                                                 || Model.InspectionExpired || Model.InspectionDueSoon));
+}
+
+<section class="ts-card">
+    <header class="list-head">
+        <div>
+            <h2 class="list-title">@Model.Name</h2>
+            <span class="badge">@fuelLabel</span>
+        </div>
+        <div class="list-actions">
+            <a class="btn btn--soft" asp-action="Index">← Wróć</a>
+            <a class="btn btn--accent" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+        </div>
+    </header>
+
+    @if (anyAlerts)
+    {
+        <div class="alert @(Model.InsuranceExpired || Model.InspectionExpired ? "alert-danger" : "alert-info")">
+            <strong>Przypomnienie:</strong>
+            <ul style="margin:.5rem 0 0 1rem;">
+                @if (Model.InsuranceExpired)
+                {
+                    <li>Polisa OC wygasła @(Model.InsuranceValidTo?.ToLocalTime().ToString("dd.MM.yyyy")).</li>
+                }
+                else if (Model.InsuranceDueSoon)
+                {
+                    <li>Polisa OC wygasa za @Model.InsuranceDaysLeft dni (do @(Model.InsuranceValidTo?.ToLocalTime().ToString("dd.MM.yyyy"))).</li>
+                }
+
+                @if (Model.InspectionExpired)
+                {
+                    <li>Badanie techniczne wygasło @(Model.InspectionValidTo?.ToLocalTime().ToString("dd.MM.yyyy")).</li>
+                }
+                else if (Model.InspectionDueSoon)
+                {
+                    <li>Badanie techniczne wygasa za @Model.InspectionDaysLeft dni (do @(Model.InspectionValidTo?.ToLocalTime().ToString("dd.MM.yyyy"))).</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <dl class="stats stats--three mt-3">
+        <div class="stat">
+            <dt class="stat__label">Śr. spalanie</dt>
+            <dd class="stat__value">
+                <span class="metric__num">@Model.AverageConsumptionLper100.ToString("0.##")</span>
+                <span class="metric__unit">l/100 km</span>
+            </dd>
+        </div>
+        <div class="stat">
+            <dt class="stat__label">Pojemność baku</dt>
+            <dd class="stat__value">
+                <span class="metric__num">@Model.TankCapacityL.ToString("0.##")</span>
+                <span class="metric__unit">l</span>
+            </dd>
+        </div>
+        @if (Model.EstimatedRangeKm.HasValue)
+        {
+            <div class="stat">
+                <dt class="stat__label">Szacowany zasięg</dt>
+                <dd class="stat__value">
+                    <span class="metric__num">@Model.EstimatedRangeKm.Value.ToString("0.#")</span>
+                    <span class="metric__unit">km</span>
+                </dd>
+            </div>
+        }
+    </dl>
+
+    @if (showInsurance)
+    {
+        <section class="card lift mt-3">
+            <header class="list-head" style="margin-bottom:8px">
+                <h3>Ubezpieczenie OC</h3>
+                <div>
+                    @if (Model.InsuranceExpired)
+                    {
+                        <span class="badge badge--danger">wygasło</span>
+                    }
+                    else if (Model.InsuranceDueSoon)
+                    {
+
+                        <span class="badge badge--warn">wkrótce wygasa</span>
+                    }
+                    else if (Model.InsuranceValidTo.HasValue)
+                    {
+
+                        <span class="badge badge--ok">ważne</span>
+                    }
+                </div>
+            </header>
+
+            <div class="row">
+                @if (!string.IsNullOrWhiteSpace(Model.InsuranceCompany))
+                {
+                    <div class="col-md-6 col-12">
+                        <div class="stat__label">Ubezpieczyciel</div>
+                        <div class="stat__value">@Model.InsuranceCompany</div>
+                    </div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.InsurancePolicyNumber))
+                {
+                    <div class="col-md-6 col-12">
+                        <div class="stat__label">Numer polisy</div>
+                        <div class="stat__value">@Model.InsurancePolicyNumber</div>
+                    </div>
+                }
+                <div class="col-md-6 col-12">
+                    <div class="stat__label">Ważne od</div>
+                    <div class="stat__value">@(Model.InsuranceValidFrom?.ToLocalTime().ToString("dd.MM.yyyy") ?? "—")</div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="stat__label">Ważne do</div>
+                    <div class="stat__value">
+                        @(Model.InsuranceValidTo?.ToLocalTime().ToString("dd.MM.yyyy") ?? "—")
+                        @if (Model.InsuranceDaysLeft.HasValue)
+                        {
+                            <small class="stat__hint">(@(Model.InsuranceExpired ? "po terminie" : $"za {Model.InsuranceDaysLeft} dni"))</small>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    @if (showInspection)
+    {
+        <section class="card lift mt-3">
+            <header class="list-head" style="margin-bottom:8px">
+                <h3>Badania techniczne</h3>
+                <div>
+                    @if (Model.InspectionExpired)
+                    {
+                        <span class="badge badge--danger">wygasło</span>
+                    }
+                    else if (Model.InspectionDueSoon)
+                    {
+
+                        <span class="badge badge--warn">wkrótce wygasa</span>
+                    }
+                    else if (Model.InspectionValidTo.HasValue)
+                    {
+
+                        <span class="badge badge--ok">ważne</span>
+                    }
+                </div>
+            </header>
+
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="stat__label">Ważne od</div>
+                    <div class="stat__value">@(Model.InspectionValidFrom?.ToLocalTime().ToString("dd.MM.yyyy") ?? "—")</div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="stat__label">Ważne do</div>
+                    <div class="stat__value">
+                        @(Model.InspectionValidTo?.ToLocalTime().ToString("dd.MM.yyyy") ?? "—")
+                        @if (Model.InspectionDaysLeft.HasValue)
+                        {
+                            <small class="stat__hint">(@(Model.InspectionExpired ? "po terminie" : $"za {Model.InspectionDaysLeft} dni"))</small>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    <form asp-action="Delete" method="post" class="card mt-3"
+          onsubmit="return confirm('Na pewno usunąć to auto? Tej operacji nie można cofnąć.');">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="list-actions" style="justify-content:flex-start">
+            <button class="btn btn-danger" type="submit">Usuń auto</button>
+            <a class="btn btn--ghost" asp-action="Index">Anuluj</a>
+        </div>
+    </form>
+</section>

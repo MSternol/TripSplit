@@ -1,0 +1,98 @@
+﻿@model TripSplit.Web.Models.Trips.TripParticipantsVm
+@{
+    ViewData["Title"] = "Uczestnicy";
+    Layout = "_Layout";
+}
+
+<section class="ts-card">
+    <header class="list-head">
+        <h2 class="list-title">Uczestnicy</h2>
+        <div class="list-actions">
+            <a class="btn btn--soft" asp-action="Details" asp-route-id="@Model.TripId">← Wstecz</a>
+        </div>
+    </header>
+
+    <form asp-action="SetParticipants" method="post" novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="TripId" />
+
+        <div class="cards">
+            <article class="car-card">
+                <header class="car-card__head"><div class="car-card__title">Kierowca</div></header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="DriverFirstName" class="form-label">Imię</label>
+                        <input asp-for="DriverFirstName" class="form-control" placeholder="np. Jan" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DriverLastName" class="form-label">Nazwisko</label>
+                        <input asp-for="DriverLastName" class="form-control" placeholder="np. Kowalski" />
+                    </div>
+                </div>
+            </article>
+
+            <article class="car-card">
+                <header class="car-card__head"><div class="car-card__title">Pasażer 1</div></header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="P1FirstName" class="form-label">Imię</label>
+                        <input asp-for="P1FirstName" class="form-control" placeholder="np. Anna" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="P1LastName" class="form-label">Nazwisko</label>
+                        <input asp-for="P1LastName" class="form-control" placeholder="np. Nowak" />
+                    </div>
+                </div>
+            </article>
+
+            <article class="car-card">
+                <header class="car-card__head"><div class="car-card__title">Pasażer 2</div></header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="P2FirstName" class="form-label">Imię</label>
+                        <input asp-for="P2FirstName" class="form-control" placeholder="np. Piotr" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="P2LastName" class="form-label">Nazwisko</label>
+                        <input asp-for="P2LastName" class="form-control" placeholder="np. Zieliński" />
+                    </div>
+                </div>
+            </article>
+
+            <article class="car-card">
+                <header class="car-card__head"><div class="car-card__title">Pasażer 3</div></header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="P3FirstName" class="form-label">Imię</label>
+                        <input asp-for="P3FirstName" class="form-control" placeholder="np. Ola" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="P3LastName" class="form-label">Nazwisko</label>
+                        <input asp-for="P3LastName" class="form-control" placeholder="np. Krawczyk" />
+                    </div>
+                </div>
+            </article>
+
+            <article class="car-card">
+                <header class="car-card__head"><div class="car-card__title">Pasażer 4</div></header>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="P4FirstName" class="form-label">Imię</label>
+                        <input asp-for="P4FirstName" class="form-control" placeholder="np. Marek" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="P4LastName" class="form-label">Nazwisko</label>
+                        <input asp-for="P4LastName" class="form-control" placeholder="np. Lewandowski" />
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="list-actions mt-3">
+            <button class="btn btn--accent" type="submit">Zapisz</button>
+            <a class="btn btn--ghost" asp-action="Details" asp-route-id="@Model.TripId">Wstecz</a>
+        </div>
+    </form>
+
+    <p class="text-muted mt-3">Uwaga: imię i nazwisko służą do weryfikacji przy udostępnionym linku (bez edycji).</p>
+</section>

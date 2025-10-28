@@ -1,0 +1,58 @@
+﻿@model TripSplit.Application.DTOs.TripDto
+@{
+    ViewData["Title"] = "Szczegóły przejazdu (podgląd)";
+    Layout = "_Layout";
+}
+
+<section class="ts-card">
+    <header style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+        <div>
+            <h2 class="cars-title" style="margin:0;">Szczegóły przejazdu (podgląd)</h2>
+            <p class="text-muted" style="margin:.25rem 0 0;">
+                Trasa: <strong>@Model.StartName</strong> → <strong>@Model.EndName</strong>
+            </p>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <span class="pill">Dystans: @Model.DistanceKm.ToString("0.##") km</span>
+            <span class="pill">Osób: @Model.PeopleCount</span>
+        </div>
+    </header>
+
+    <div class="cards cards--stats" style="margin-top:12px;">
+        <div class="stat stat--card">
+            <div class="stat__label">Cena paliwa</div>
+            <div class="stat__value">@Model.FuelPricePerL.ToString("0.00") zł/l</div>
+        </div>
+        <div class="stat stat--card">
+            <div class="stat__label">Śr. spalanie</div>
+            <div class="stat__value">@Model.AverageConsumptionLper100.ToString("0.##") l/100 km</div>
+        </div>
+        <div class="stat stat--card">
+            <div class="stat__label">Zużycie paliwa</div>
+            <div class="stat__value">@Model.LitersUsed.ToString("0.##") l</div>
+        </div>
+        <div class="stat stat--card">
+            <div class="stat__label">Parking</div>
+            <div class="stat__value">@Model.ParkingCost.ToString("0.00") zł</div>
+        </div>
+        <div class="stat stat--card">
+            <div class="stat__label">Dodatkowe koszty</div>
+            <div class="stat__value">@Model.ExtraCosts.ToString("0.00") zł</div>
+        </div>
+    </div>
+
+    <div class="ts-card" style="margin-top:14px;">
+        <h3 style="margin:0 0 .5rem;">Podsumowanie</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+                <div class="stat__label">Paliwo (łącznie)</div>
+                <div class="stat__value">@Model.FuelCostTotal.ToString("0.00") zł</div>
+            </div>
+            <div>
+                <div class="stat__label">RAZEM</div>
+                <div class="stat__value">@Model.TripCostTotal.ToString("0.00") zł</div>
+                <div class="stat__hint">na osobę: @Model.CostPerPerson.ToString("0.00") zł</div>
+            </div>
+        </div>
+    </div>
+</section>

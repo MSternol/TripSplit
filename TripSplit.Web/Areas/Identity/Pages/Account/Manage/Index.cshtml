@@ -1,0 +1,61 @@
+﻿@page
+@model TripSplit.Web.Areas.Identity.Pages.Account.Manage.IndexModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Profil";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<section class="ts-card manage">
+    <aside>
+        <partial name="_ManageNav" />
+    </aside>
+
+    <section>
+        <h2 class="manage-title">Profil</h2>
+        <partial name="_StatusMessage" for="StatusMessage" />
+
+        <form method="post" class="manage-form" novalidate>
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-row">
+                <div>
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn--accent">Zapisz</button>
+            </div>
+        </form>
+
+        <div class="danger-card">
+            <h3>Usuwanie konta</h3>
+            <p class="danger-note"><strong>Uwaga:</strong> tej operacji nie można cofnąć.</p>
+
+            <form asp-page="DeletePersonalData" method="post"
+                  onsubmit="return confirm('Czy na pewno chcesz trwale usunąć konto?');">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-danger" type="submit">Usuń konto</button>
+            </form>
+        </div>
+    </section>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

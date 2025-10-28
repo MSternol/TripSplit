@@ -1,0 +1,96 @@
+﻿@model IReadOnlyList<TripSplit.Web.Models.Trips.TripListItemVm>
+
+@{
+    ViewData["Title"] = "Przejazdy";
+    Layout = "_Layout";
+    var hasTrips = Model is { Count: > 0 };
+}
+
+<section class="section">
+    <header class="list-head">
+        <div>
+            <h2 class="list-title">Przejazdy</h2>
+            <p class="list-sub">Ostatnie trasy — koszt łącznie i na osobę.</p>
+        </div>
+        @if (hasTrips)
+        {
+            <div class="list-actions">
+                <a class="btn btn--accent" asp-action="Create">+ Nowy przejazd</a>
+            </div>
+        }
+    </header>
+
+    @if (!hasTrips)
+    {
+        @await Html.PartialAsync("_EmptyState",
+            new TripSplit.Web.Models.Shared.EmptyStateVm {
+                Title = "Brak przejazdów",
+                Subtitle = "Dodaj pierwszy przejazd, aby policzyć koszty i podzielić na uczestników.",
+                PrimaryText = "Nowy przejazd",
+                PrimaryUrl = Url.Action("Create")!,
+                SecondaryText = "Dowiedz się więcej",
+                SecondaryUrl = Url.Action("Index", "Home")!
+            })
+    }
+    else
+    {
+        <div class="trips-grid">
+            @foreach (var t in Model)
+            {
+                <article class="trip-card lift">
+                    <header class="trip-card__head">
+                        <div class="trip-head__left">
+                            <h3 class="trip-title" title="@($"{t.StartName} → {t.EndName}")">
+                                <span class="route">@t.StartName</span>
+                                <span class="arrow" aria-hidden="true">→</span>
+                                <span class="route">@t.EndName</span>
+                            </h3>
+
+                            <time class="chip chip--muted trip-date"
+                                  datetime="@t.StartedAt.ToString("o")"
+                                  title="@t.StartedAt.ToLocalTime().ToString("f")">
+                                @t.StartedAt.ToLocalTime().ToString("dd.MM.yyyy HH\\:mm")
+                            </time>
+                        </div>
+                    </header>
+
+                    <section class="trip-card__stats">
+                        <dl class="stats stats--three">
+                            <div class="stat">
+                                <dt class="stat__label">Koszt łącznie</dt>
+                                <dd class="stat__value">
+                                    <span class="metric__num">@t.TripCostTotal.ToString("0.00")</span>
+                                    <span class="metric__unit">zł</span>
+                                </dd>
+                            </div>
+                            <div class="stat">
+                                <dt class="stat__label">Na osobę</dt>
+                                <dd class="stat__value">
+                                    <span class="metric__num">@t.CostPerPerson.ToString("0.00")</span>
+                                    <span class="metric__unit">zł</span>
+                                </dd>
+                            </div>
+                            <div class="stat">
+                                <dt class="stat__label">Dystans</dt>
+                                <dd class="stat__value">
+                                    <span class="metric__num">@t.DistanceKm.ToString("0.##")</span>
+                                    <span class="metric__unit">km</span>
+                                </dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <footer class="trip-card__foot">
+                        <a class="btn btn--ghost btn-sm" asp-action="Details" asp-route-id="@t.Id">Szczegóły</a>
+                        <a class="btn btn--soft btn-sm" asp-action="Edit" asp-route-id="@t.Id">Edytuj</a>
+                        <form asp-action="Delete" method="post" class="inline" onsubmit="return confirm('Usunąć ten przejazd?');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@t.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                        </form>
+                    </footer>
+                </article>
+            }
+        </div>
+    }
+</section>

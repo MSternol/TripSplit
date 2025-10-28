@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Strona główna";
+    Layout = "_Layout";
+}
+<section class="ts-card">
+    <h2>Witaj w TripSplit 🚗</h2>
+    <p class="text-muted mb-3">
+        Prosty sposób na liczenie kosztów podróży i sprawiedliwy podział między uczestników.
+    </p>
+
+    <div class="ts-row">
+        <a class="btn ts-btn ts-btn--brand" asp-controller="Trips" asp-action="Create">+ Nowy przejazd</a>
+        <a class="btn ts-btn ts-btn--soft" asp-controller="Trips" asp-action="Index">Moje przejazdy</a>
+        <a class="btn ts-btn ts-btn--green" asp-controller="Cars" asp-action="Index">Moje auta</a>
+    </div>
+</section>
+
+<section class="mt-4 ts-card">
+    <h3>Co możesz zrobić?</h3>
+    <ul class="mb-0">
+        <li>Wylicz koszt paliwa, parkingu i dodatkowych opłat.</li>
+        <li>Podziel koszt na liczbę osób w aucie.</li>
+        <li>Dodaj auto i policz koszt pełnego baku.</li>
+        <li>Udostępnij link do podglądu przejazdu uczestnikom (bez edycji).</li>
+    </ul>
+</section>

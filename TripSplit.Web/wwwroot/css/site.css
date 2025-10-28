@@ -1,0 +1,269 @@
+﻿@layer base, utilities, components, overrides;
+
+@import url("./global.css") layer(base);
+@import url("./helpers.css") layer(utilities);
+@import url("./trips.css") layer(components);
+@import url("./cars.css") layer(components);
+
+:root {
+    --gap: 16px;
+    --r: 16px;
+    --r-lg: 22px;
+    --sh-card: 0 8px 28px rgba(15,23,42,.08);
+    --sh-card-h: 0 14px 44px rgba(15,23,42,.12);
+    --glass: color-mix(in oklab, var(--paper) 88%, transparent);
+}
+
+    :root[data-theme="dark"] {
+        --glass: color-mix(in oklab, var(--paper) 80%, transparent);
+        --surface-2: rgba(255,255,255,.04);
+        --surface-2h: rgba(255,255,255,.07);
+        --surface-3: rgba(255,255,255,.10);
+        --surface-4: rgba(255,255,255,.16);
+    }
+
+.trips-grid, .cars-grid, .cards {
+    --min: 280px;
+    --gap: var(--gap,16px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(var(--min),1fr));
+    gap: var(--gap);
+    align-items: start;
+}
+
+@media (max-width:640px) {
+    .trips-grid, .cars-grid, .cards {
+        --min: 240px;
+    }
+}
+
+.trip-card, .car-card {
+    position: relative;
+    background: var(--glass);
+    border-radius: var(--r);
+    padding: clamp(14px,2vw,18px);
+    border: 1px solid color-mix(in oklab, var(--line) 60%, transparent);
+    box-shadow: var(--sh-card);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    min-width: 0;
+    container-type: inline-size;
+}
+
+    .trip-card:hover, .car-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--sh-card-h);
+        border-color: color-mix(in oklab, var(--brand) 35%, var(--line) 65%);
+    }
+
+    .trip-card::before, .car-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(140deg, color-mix(in oklab, var(--accent) 28%, transparent), color-mix(in oklab, var(--brand) 22%, transparent));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: .22;
+        pointer-events: none;
+    }
+
+.trip-card__head, .car-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    margin-bottom: .6rem;
+    min-width: 0;
+}
+
+.trip-title, .car-card__title {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-family: var(--head);
+    font-weight: 800;
+    font-size: clamp(16px,1.9vw,18px);
+    line-height: 1.2;
+    margin: 0;
+    min-width: 0;
+}
+
+    .trip-title .route, .car-card__title .route {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.stats, .stats--three, .stats--two {
+    display: grid;
+    gap: .7rem .9rem;
+    margin: 0;
+}
+
+.stats--three {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+}
+
+.stats--two {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+}
+
+@container (max-width:520px) {
+    .stats--three {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+@container (max-width:360px) {
+    .stats--three, .stats--two {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat {
+    background: var(--surface-2);
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: .75rem .85rem;
+    min-height: 70px;
+    display: grid;
+    align-content: center;
+    transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+
+    .stat:hover {
+        border-color: var(--surface-4);
+        background: var(--surface-2h);
+        transform: translateY(-1px);
+    }
+
+.stat__label {
+    font-size: .8rem;
+    color: var(--muted);
+    letter-spacing: .02em;
+    margin: 0 0 .2rem;
+    white-space: nowrap;
+}
+
+.stat__value {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .4rem;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.metric__num {
+    font-size: 1.18rem;
+}
+
+.metric__unit {
+    font-size: .82rem;
+    opacity: .7;
+    font-weight: 600;
+}
+
+.chip, .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .8rem;
+    line-height: 1;
+    border: 1px solid var(--line);
+    background: color-mix(in oklab, var(--paper) 92%, var(--ink) 8%);
+}
+
+.badge--ok {
+    color: var(--ok-fg);
+    background: var(--ok-bg);
+    border-color: var(--ok-br);
+}
+
+.badge--warn {
+    color: var(--warn-fg);
+    background: var(--warn-bg);
+    border-color: var(--warn-br);
+}
+
+.badge--danger {
+    color: var(--danger-fg);
+    background: var(--danger-bg);
+    border-color: var(--danger-br);
+}
+
+.fuel-badge {
+    color: var(--fuel-fg);
+    background: var(--fuel-bg);
+    border-color: var(--fuel-br);
+}
+
+.trip-card__foot, .car-card__actions {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-top: .9rem;
+}
+
+@container (max-width:360px) {
+    .trip-card__foot .btn, .car-card__actions .btn {
+        flex: 1 1 100%;
+    }
+}
+
+.list-head, .cars-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: .9rem;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.list-title, .cars-title {
+    margin: 0;
+    font-family: var(--head);
+    font-weight: 800;
+    font-size: clamp(18px,2.1vw,22px);
+}
+
+.list-sub, .cars-sub {
+    margin: .25rem 0 0;
+    color: var(--muted);
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .trip-card, .car-card, .stat {
+        transition: none !important;
+    }
+}
+
+@supports(-webkit-appearance:none) {
+    .trip-card::before, .car-card::before {
+        opacity: .18;
+    }
+}
+
+.trips-grid, .cars-grid, .cards {
+    justify-items: stretch;
+}
+
+.trip-card, .car-card {
+    min-width: 0;
+}
+
+.trip-card__foot .btn, .car-card__actions .btn {
+    flex: 0 1 auto;
+}
+
+@layer overrides {
+    .nav__inner {
+        max-width: var(--container);
+        margin-inline: auto;
+    }
+}

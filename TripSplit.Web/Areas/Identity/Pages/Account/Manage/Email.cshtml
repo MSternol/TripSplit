@@ -1,0 +1,79 @@
+﻿@page
+@model EmailModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "E-mail";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<section class="ts-card">
+    <div class="row">
+        <div class="col-md-4">
+            <partial name="_ManageNav" />
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="mb-0">Adres e-mail</h2>
+            <p class="subtitle">Zobacz aktualny adres i (opcjonalnie) ustaw nowy.</p>
+
+            <partial name="_StatusMessage" for="StatusMessage" />
+
+            <form id="email-form" method="post" class="form-grid" novalidate>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                @if (Model.IsEmailConfirmed)
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Bieżący e-mail</label>
+                        <div class="input-group">
+                            <input asp-for="Email" class="form-control" disabled />
+                            <span class="input-group-text" title="Zweryfikowany" aria-label="Zweryfikowany">✓</span>
+                        </div>
+                        <small class="text-muted">Ten adres jest zweryfikowany.</small>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-2">
+                        <label class="form-label">Bieżący e-mail</label>
+                        <input asp-for="Email" class="form-control" disabled />
+                        <small class="text-muted">Adres nie jest zweryfikowany.</small>
+                    </div>
+
+                    <button id="email-verification"
+                            type="submit"
+                            asp-page-handler="SendVerificationEmail"
+                            class="btn btn--soft"
+                            style="margin-bottom:1rem;">
+                        Wyślij link weryfikacyjny
+                    </button>
+                }
+
+                <div class="mb-3">
+                    <label asp-for="Input.NewEmail" class="form-label"></label>
+                    <input asp-for="Input.NewEmail"
+                           class="form-control"
+                           autocomplete="email"
+                           placeholder="np. imie.nazwisko@domena.pl" />
+                    <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                    <small class="text-muted">Po zmianie poprosimy o potwierdzenie nowego adresu.</small>
+                </div>
+
+                <div class="form-actions" style="gap:.6rem;flex-wrap:wrap;">
+                    <button id="change-email-button"
+                            type="submit"
+                            asp-page-handler="ChangeEmail"
+                            class="btn btn--accent">
+                        Zmień e-mail
+                    </button>
+                    <a class="btn btn--ghost" asp-page="Index">Wróć do profilu</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

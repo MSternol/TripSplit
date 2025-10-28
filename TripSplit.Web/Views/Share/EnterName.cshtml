@@ -1,0 +1,41 @@
+﻿@model string
+@{
+    ViewData["Title"] = "Dostęp do przejazdu";
+    Layout = "_Layout";
+}
+
+<section class="ts-card">
+    <header style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+        <div>
+            <h2 style="margin:0;">Dostęp do przejazdu</h2>
+            <p class="text-muted" style="margin:.25rem 0 0;">
+                Wpisz swoje imię i nazwisko — sprawdzimy, czy jesteś na liście uczestników.
+            </p>
+        </div>
+    </header>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" style="margin-top:10px;">@ViewBag.Error</div>
+    }
+
+    <form method="post" asp-action="ViewTrip" asp-route-token="@Model" class="form-grid" style="margin-top:12px;">
+        <div>
+            <label class="form-label">Imię</label>
+            <input name="firstName" class="form-control" placeholder="np. Jan" required />
+        </div>
+        <div>
+            <label class="form-label">Nazwisko</label>
+            <input name="lastName" class="form-control" placeholder="np. Kowalski" required />
+        </div>
+
+        <div class="form-actions">
+            <button class="btn btn--accent" type="submit">Pokaż przejazd</button>
+            <a class="btn btn--ghost" href="/">Anuluj</a>
+        </div>
+    </form>
+
+    <div class="text-muted" style="margin-top:8px;font-size:.9rem;">
+        Uwaga: link może być ograniczony czasowo przez właściciela przejazdu.
+    </div>
+</section>

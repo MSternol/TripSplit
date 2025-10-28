@@ -1,0 +1,24 @@
+﻿@model TripSplit.Web.Models.Cars.CarInsuranceVm
+
+<div class="row js-insurance-fields">
+    <div class="col-md-6 col-12">
+        <label asp-for="InsuranceCompany" class="form-label"></label>
+        <input asp-for="InsuranceCompany" class="form-control" placeholder="np. Warta" />
+        <span asp-validation-for="InsuranceCompany" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 col-12">
+        <label asp-for="InsurancePolicyNumber" class="form-label"></label>
+        <input asp-for="InsurancePolicyNumber" class="form-control" placeholder="np. OC/WAR/2025/1122" />
+        <span asp-validation-for="InsurancePolicyNumber" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 col-12">
+        <label asp-for="InsuranceValidFrom" class="form-label"></label>
+        <input asp-for="InsuranceValidFrom" class="form-control" type="date" />
+        <span asp-validation-for="InsuranceValidFrom" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 col-12">
+        <label asp-for="InsuranceValidTo" class="form-label"></label>
+        <input asp-for="InsuranceValidTo" class="form-control" type="date" />
+        <span asp-validation-for="InsuranceValidTo" class="text-danger"></span>
+    </div>
+</div>

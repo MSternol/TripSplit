@@ -1,0 +1,75 @@
+﻿@page
+@model TripSplit.Web.Areas.Identity.Pages.Account.RegisterModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Rejestracja";
+}
+
+<section class="auth-hero">
+    <div class="auth-card">
+        <div class="auth-visual">
+            <div class="pitch">
+                <h3>Dołącz do TripSplit</h3>
+                <p>Załóż konto i rozliczaj przejazdy szybciej.</p>
+                <div class="points">
+                    <span>Szablony tras i aut</span>
+                    <span>Udostępnienia linkiem</span>
+                    <span>Eksport do CSV/PDF</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-form">
+            <h2 class="mb-0">Rejestracja</h2>
+            <p class="subtitle">Uzupełnij dane lub skorzystaj z konta zewnętrznego.</p>
+
+            <partial name="_ExternalProviders" model="(Model.ExternalLogins, Model.ReturnUrl)" />
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="form-row">
+                    <div>
+                        <label asp-for="Input.FirstName"></label>
+                        <input asp-for="Input.FirstName" class="form-control" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.LastName"></label>
+                        <input asp-for="Input.LastName" class="form-control" />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="registerSubmit" type="submit" class="btn btn--accent">Utwórz konto</button>
+                    <a class="btn btn--soft" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Mam już konto</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
